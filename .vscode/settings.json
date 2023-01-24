@@ -1,0 +1,8 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#511B29",
+    "titleBar.activeBackground": "#71263A",
+    "titleBar.activeForeground": "#FEFBFC"
+  },
+  "material-icon-theme.activeIconPack": "nest"
+}
