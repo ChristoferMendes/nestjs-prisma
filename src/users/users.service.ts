@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundError } from 'src/shared/errors/NotFoundError';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
@@ -17,14 +16,8 @@ export class UsersService {
     return this.usersRepository.findAll();
   }
 
-  async findOne(id: number): Promise<UserEntity> {
-    const user = await this.usersRepository.findOne(id);
-
-    if (!user) {
-      throw new NotFoundError('User not found');
-    }
-
-    return user;
+  findOne(id: number): Promise<UserEntity> {
+    return this.usersRepository.findOne(id);
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
