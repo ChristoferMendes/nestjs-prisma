@@ -8,31 +8,31 @@ import { UserEntity } from '../entities/user.entity';
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const user = await this.prisma.user.create({
+  create(createUserDto: CreateUserDto): Promise<UserEntity> {
+    const user = this.prisma.user.create({
       data: createUserDto,
     });
 
     return user;
   }
 
-  async findAll(): Promise<UserEntity[]> {
-    return await this.prisma.user.findMany();
+  findAll(): Promise<UserEntity[]> {
+    return this.prisma.user.findMany();
   }
 
   async findOne(id: number): Promise<UserEntity> {
-    return await this.prisma.user.findUnique({ where: { id } });
+    return await this.prisma.user.findUniqueOrThrow({ where: { id } });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.prisma.user.update({
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
     });
   }
 
-  async remove(id: number) {
-    return await this.prisma.user.delete({
+  remove(id: number) {
+    return this.prisma.user.delete({
       where: { id },
     });
   }
