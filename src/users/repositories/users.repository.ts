@@ -4,6 +4,10 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserEntity } from '../entities/user.entity';
 
+const include = {
+  posts: true,
+};
+
 @Injectable()
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -17,23 +21,32 @@ export class UsersRepository {
   }
 
   findAll(): Promise<UserEntity[]> {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      include: {
+        posts: true,
+      },
+    });
   }
 
   async findOne(id: number): Promise<UserEntity> {
-    return await this.prisma.user.findUniqueOrThrow({ where: { id } });
+    return await this.prisma.user.findUniqueOrThrow({
+      where: { id },
+      include,
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
       data: updateUserDto,
+      include,
     });
   }
 
   remove(id: number) {
     return this.prisma.user.delete({
       where: { id },
+      include,
     });
   }
 }
