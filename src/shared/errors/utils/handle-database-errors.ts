@@ -1,17 +1,25 @@
 import { DatabaseError } from '../DatabaseError';
+import { ForeignKeyConstraintError } from '../ForeignKeyConstraintError';
+import { NotFoundError } from '../NotFoundError';
 import { PrismaClientError } from '../PrismaClientError';
 import { UniqueContraintError } from '../UniqueConstraintError';
 
 enum PrismaErrors {
-  UniqueContraintFail = 'P2002',
+  UniqueConStraintFail = 'P2002',
+  ForeignKeyConstraint = 'P2003',
+  DependentRecordNotFound = 'P2025',
 }
 
-const { UniqueContraintFail } = PrismaErrors;
+const { UniqueConStraintFail, DependentRecordNotFound, ForeignKeyConstraint } =
+  PrismaErrors;
 
 export const handleDatabaseErrors = (e: PrismaClientError): Error => {
   const prismaErrors = {
-    [UniqueContraintFail]: (e: PrismaClientError) =>
+    [UniqueConStraintFail]: (e: PrismaClientError) =>
       new UniqueContraintError(e),
+    [ForeignKeyConstraint]: (e: PrismaClientError) =>
+      new ForeignKeyConstraintError(e),
+    [DependentRecordNotFound]: () => new NotFoundError('Record not found'),
   };
 
   const prismaCode = e.code as PrismaErrors;
