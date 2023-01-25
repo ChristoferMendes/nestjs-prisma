@@ -17,10 +17,10 @@ async function bootstrap() {
   );
 
   const interceptors = [
+    new NotFoundInterceptor(),
     new ConflictInterceptor(),
     new DatabaseInterceptor(),
     new UnauthorizedInterceptor(),
-    new NotFoundInterceptor(),
   ];
 
   app.useGlobalInterceptors(...interceptors);
