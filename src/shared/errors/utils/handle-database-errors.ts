@@ -19,7 +19,8 @@ export const handleDatabaseErrors = (e: PrismaClientError): Error => {
       new UniqueContraintError(e),
     [ForeignKeyConstraint]: (e: PrismaClientError) =>
       new ForeignKeyConstraintError(e),
-    [DependentRecordNotFound]: () => new NotFoundError('Record not found'),
+    [DependentRecordNotFound]: (e: PrismaClientError) =>
+      new NotFoundError(e.message),
   };
 
   const prismaCode = e.code as PrismaErrors;
